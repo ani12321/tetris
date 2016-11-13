@@ -1,13 +1,14 @@
 
 var Block = function(x, y) {
-    this.width = 64;
-    this.height = 64;
+    this.width = Constants.cell_width;
+    this.height = Constants.cell_height;
 
     // positions
     this.x = x;
     this.y = y;
 
     this.moving = true; // wheather block is moving
+    this.form = Constants.blocks[0];
 }
 
 Block.prototype.Init = function() {
@@ -21,6 +22,7 @@ Block.prototype.Update = function() {
 Block.prototype._move = function() {
     if(this.y == Constants.height - this.height) {
         this.moving = false;
+        game.CreateBlock();
         return;
     }
 
@@ -41,5 +43,13 @@ Block.prototype.MoveRight = function() {
 
 Block.prototype.Paint = function(ctx) {
     ctx.fillStyle = 'black';
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+
+    var w = this.form[0].length;
+    var h = this.form.length;
+
+    for(i=0; i<w; i++)
+        for(j=0; j<h; j++){
+            if(this.form[i][j] == 1)
+                ctx.fillRect(this.x + this.width * (i-2), this.y + this.height * (j-2), this.width, this.height);
+        }
 }

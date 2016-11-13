@@ -1,11 +1,9 @@
 
 var Game = function(canvas){
-    this.width = 480; // window width
-    this.height = 640; // window height
-    this.columns = 10;
-    this.rows = 7;
-    this.cell_width = 64;
-    this.cell_height = 64;
+    this.width = Constants.width; // window width
+    this.height = Constants.height; // window height
+    this.columns = 20;
+    this.rows = 15;
 
     this.blocks = []; // list of blocks
     this.active_block = null;
@@ -36,11 +34,7 @@ Game.prototype.Start = function() {
     if(typeof this.game_loop != "undefined")
         clearInterval(this.game_loop);
     this.game_loop = setInterval(this.Update.bind(this), 60);
-
-    var block = new Block(0,0);
-    this.blocks.push(block);
-    block.Init();
-    this.active_block = block;
+    this.CreateBlock();
 }
 
 Game.prototype.KeyDown = function(event) {
@@ -92,4 +86,12 @@ Game.prototype.Paint = function() {
     this.blocks.forEach(function(element) {
         element.Paint(this.ctx);
     }, this);
+}
+
+Game.prototype.CreateBlock = function() {
+    var block = new Block(Constants.width/2 - Constants.cell_width,-Constants.cell_height);
+    this.blocks.push(block);
+    this.active_block = block;
+    block.Init();
+    return block;
 }
